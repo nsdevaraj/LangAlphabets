@@ -57,8 +57,9 @@ Pronunciation looks up actual archive filenames in a generated recording
 manifest, using the consonant and vowel identities rather than reconstructing
 the result portion of a legacy filename. This covers older Kannada vowel-sign
 labels and Thai vowel-component spellings without changing the written result.
-Canonical Unicode equivalents are matched, but different consonants or languages
-are never substituted.
+Canonical Unicode equivalents are matched, but different consonants are never
+substituted. Nepali alone may reuse a Hindi recording for the same consonant and
+vowel when no native Nepali recording exists.
 
 The 5,149 archive files were WAV audio incorrectly named `.mp3`, which failed in
 the integrated browser. They are now real MP3 files with their original filenames.
@@ -68,10 +69,20 @@ unavailable device voices.
 The manifest maps 4,547 current selections. All selections in Tamil, Telugu,
 Kannada, Bengali, Punjabi, Malayalam, Gujarati and Thai have recordings. Hindi
 has recordings for its original 33 consonants (429 combinations); its seven newly
-added nukta letters have no files in this archive. Sinhala and the six newly
-added languages have no archive recordings. Only these genuinely absent combinations use a matching-language
-device voice, with a clear message if none is available. Additional archive
-recordings for letters/signs excluded from this exercise are retained.
+added nukta letters have no files in this archive. Nepali reuses those 429 Hindi
+recordings for its 33 shared consonants and 13 vowel/sign choices, bringing
+recorded playback coverage to 4,976 selections. The UI identifies this as Hindi
+audio; it is an approximation, since Nepali pronunciation can differ. Matching
+uses letter identities, not array positions, and native Nepali recordings take
+priority if added later.
+
+Nepali's three conjuncts (KSHA, TRA and JNYA; 39 combinations) have no matching
+Hindi recordings. They use a Nepali device voice, never a Hindi voice or an
+unrelated Hindi letter. Sinhala, Burmese, Lao, Javanese, Amharic and Khmer also
+have no archive recordings. Combinations without a recording use a
+matching-language device voice, with a clear message if none is available.
+Additional archive recordings for letters/signs excluded from this exercise
+are retained.
 
 ## Audio tests
 
@@ -82,8 +93,9 @@ required:
 node --test tests/audio.test.js
 ```
 
-These tests check CDN URLs for every mapped selection, legacy filename handling,
-missing-recording device voices, playback failures, and cancellation. They mock
+These tests check CDN URLs for every mapped selection, Nepali-to-Hindi fallback,
+native-recording priority, legacy filename handling, missing-recording device
+voices, playback failures, and cancellation. They mock
 playback and do not need network access. For a live check, open `index.html`,
 select a letter and choose **Listen again**; the browser's Network panel should
 show an `audio/mpeg` response from `cdn.jsdelivr.net`.

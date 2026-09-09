@@ -78,6 +78,85 @@ test('legacy Kannada and Thai recordings keep their manifest filename, not the d
   }
 });
 
+test('all 429 shared Nepali combinations play the matching Hindi CDN recording', async () => {
+  const player = createPlayer({ voices: [{ lang: 'ne-NP' }] });
+  let count = 0;
+  for (let consonant = 0; consonant < 33; consonant++) {
+    for (let vowel = 0; vowel < letters.vowelLetterLangs[10].length; vowel++) {
+      const hindiConsonant = letters.consonantLangs[4].indexOf(letters.consonantLangs[10][consonant]);
+      const hindiVowel = letters.vowelLetterLangs[4].indexOf(letters.vowelLetterLangs[10][vowel]);
+      const filename = letters.getRecordedAudioFilename(4, hindiConsonant, hindiVowel);
+      assert.ok(filename);
+      assert.deepEqual(letters.getPlaybackRecording(10, consonant, vowel), { languageIndex: 4, filename });
+      player.select(10, consonant, vowel);
+      await player.context.playAudio();
+      assert.equal(player.audios.at(-1).url, `${expectedBase}${encodeURIComponent(letters.lang[4])}/${encodeURIComponent(filename)}`);
+      assert.match(player.audioStatus.textContent, /Playing Hindi recording for this Nepali combination/);
+      count++;
+    }
+  }
+  assert.equal(count, 429);
+  assert.equal(player.audios.length, count);
+  assert.equal(player.utterances.length, 0);
+});
+
+test('Nepali fallback matches letter identities even if the Hindi inventory is reordered', async () => {
+  const player = createPlayer();
+  vm.runInContext('consonantLangs[4].reverse(); vowelLetterLangs[4].reverse();', player.context);
+  player.select(10);
+  await player.context.playAudio();
+  const filename = letters.getRecordedAudioFilename(4, 0, 0);
+  assert.equal(player.audios[0].url, `${expectedBase}${encodeURIComponent(letters.lang[4])}/${encodeURIComponent(filename)}`);
+});
+
+test('native Nepali recordings take priority over shared Hindi audio when available', async () => {
+  const player = createPlayer();
+  const key = letters.getRecordingKey(letters.consonantLangs[10][0], letters.vowelLetterLangs[10][0]);
+  const filename = 'native-nepali.mp3';
+  player.context.audioRecordings[10][key] = filename;
+  player.select(10);
+  await player.context.playAudio();
+  assert.equal(player.audios[0].url, `${expectedBase}${encodeURIComponent(letters.lang[10])}/${filename}`);
+  assert.equal(player.audioStatus.textContent, 'Playing pronunciation...');
+});
+
+test('all 39 Nepali conjunct combinations use Nepali speech, not unrelated Hindi letters', async () => {
+  const player = createPlayer({ voices: [{ lang: 'hi-IN' }, { lang: 'ne-NP' }] });
+  let count = 0;
+  for (let consonant = 33; consonant < letters.consonantLangs[10].length; consonant++) {
+    for (let vowel = 0; vowel < letters.vowelLetterLangs[10].length; vowel++) {
+      assert.equal(letters.getPlaybackRecording(10, consonant, vowel), null);
+      player.select(10, consonant, vowel);
+      await player.context.playAudio();
+      assert.equal(player.utterances.length, 1);
+      assert.equal(player.utterances[0].lang, 'ne-NP');
+      assert.equal(player.utterances[0].text, letters.getPronunciationText(10, consonant, vowel));
+      count++;
+    }
+  }
+  assert.equal(count, 39);
+  assert.equal(player.audios.length, 0);
+});
+
+test('missing Nepali conjunct recordings do not fall back to a Hindi device voice', async () => {
+  const player = createPlayer({ voices: [{ lang: 'hi-IN' }] });
+  player.select(10, 33);
+  await player.context.playAudio();
+  assert.equal(player.audios.length, 0);
+  assert.equal(player.utterances.length, 0);
+  assert.match(player.audioStatus.textContent, /No recording is available.*no matching device voice/);
+});
+
+test('a missing Hindi archive entry preserves Nepali device-voice fallback', async () => {
+  const player = createPlayer({ voices: [{ lang: 'hi-IN' }, { lang: 'ne-NP' }] });
+  const key = letters.getRecordingKey(letters.consonantLangs[10][0], letters.vowelLetterLangs[10][0]);
+  delete player.context.audioRecordings[4][key];
+  player.select(10);
+  await player.context.playAudio();
+  assert.equal(player.audios.length, 0);
+  assert.equal(player.utterances[0].lang, 'ne-NP');
+});
+
 test('absent recordings use only matching-language voices without requesting the CDN', async () => {
   const player = createPlayer({ voices: [{ lang: 'en-US' }, { lang: 'hi-IN' }] });
   player.select(4, 33);
@@ -91,6 +170,7 @@ test('absent recordings use only matching-language voices without requesting the
 test('languages without recordings or matching voices report unavailable audio', async () => {
   const player = createPlayer({ voices: [{ lang: 'en-US' }] });
   for (let language = 9; language < letters.lang.length; language++) {
+    if (language === 10) continue;
     player.select(language);
     await player.context.playAudio();
     assert.match(player.audioStatus.textContent, /No recording is available.*no matching device voice/);

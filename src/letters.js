@@ -125,7 +125,7 @@ var languageDetails = [
   },
   {
     code: 'ne-NP', font: 'Noto Sans Devanagari', script: 'Devanagari',
-    note: 'Nepali: 33 core consonants plus the common conjuncts क्ष, त्र and ज्ञ. Anusvara and visarga forms are signs, not independent vowels.',
+    note: 'Nepali: 33 core consonants plus the common conjuncts क्ष, त्र and ज्ञ. Anusvara and visarga forms are signs, not independent vowels. Matching letters use Hindi recordings when Nepali recordings are absent; pronunciation may differ.',
   },
   {
     code: 'my-MM', font: 'Noto Sans Myanmar', script: 'Myanmar',
@@ -229,6 +229,23 @@ function getRecordedAudioFilename(languageIndex, consonantIndex, vowelIndex, cat
   return null;
 }
 
+function getPlaybackRecording(languageIndex, consonantIndex, vowelIndex, catalog) {
+  const filename = getRecordedAudioFilename(languageIndex, consonantIndex, vowelIndex, catalog);
+  if (filename) return { languageIndex, filename };
+  if (languageDetails[languageIndex].code !== 'ne-NP') return null;
+
+  const hindiIndex = languageDetails.findIndex(details => details.code === 'hi-IN');
+  const consonant = consonantLangs[languageIndex][consonantIndex].normalize('NFC');
+  const vowel = getRecordingVowel(languageIndex, vowelIndex).normalize('NFC');
+  // Match identities, not positions: Nepali conjuncts occupy Hindi nukta-letter slots.
+  const hindiConsonant = consonantLangs[hindiIndex].findIndex(letter => letter.normalize('NFC') === consonant);
+  const hindiVowel = vowelLetterLangs[hindiIndex].findIndex(letter => letter.normalize('NFC') === vowel);
+  if (hindiConsonant < 0 || hindiVowel < 0) return null;
+
+  const hindiFilename = getRecordedAudioFilename(hindiIndex, hindiConsonant, hindiVowel, catalog);
+  return hindiFilename ? { languageIndex: hindiIndex, filename: hindiFilename } : null;
+}
+
 function getPronunciationText(languageIndex, consonantIndex, vowelIndex) {
   return `${getConsonantForm(languageIndex, consonantIndex)}, ${getSpokenVowel(languageIndex, vowelIndex)}, ${combineLetters(languageIndex, consonantIndex, vowelIndex)}`;
 }
@@ -244,6 +261,6 @@ if (typeof module !== 'undefined' && module.exports) {
     lang, vowelLetterLangs, consonantLangs, vowelSignLangs, meyEzuthuLangs,
     languageDetails, getConsonantForm, combineLetters, getAudioFilename, getPronunciationText,
     getSpokenVowel, getVowelKind,
-    getRecordingKey, getRecordedAudioFilename, getRecordingVowel,
+    getRecordingKey, getRecordedAudioFilename, getRecordingVowel, getPlaybackRecording,
   };
 }

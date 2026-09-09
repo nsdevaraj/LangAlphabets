@@ -277,12 +277,12 @@ async function playAudio() {
   stopAudio();
   if (!soundEnabled) return;
   const text = getPronunciationText(currentLang, consonantIndex, vowelIndex);
-  const filename = getRecordedAudioFilename(currentLang, consonantIndex, vowelIndex);
-  if (!filename) {
+  const recording = getPlaybackRecording(currentLang, consonantIndex, vowelIndex);
+  if (!recording) {
     speak(text);
     return;
   }
-  const audio = new Audio(`${audioBaseUrl}/${encodeURIComponent(lang[currentLang])}/${encodeURIComponent(filename)}`);
+  const audio = new Audio(`${audioBaseUrl}/${encodeURIComponent(lang[recording.languageIndex])}/${encodeURIComponent(recording.filename)}`);
   activeAudio = audio;
   audio.playbackRate = 0.8;
   audio.onended = () => {
@@ -297,7 +297,10 @@ async function playAudio() {
   };
   try {
     await audio.play();
-    if (activeAudio === audio) elements.audioStatus.textContent = 'Playing pronunciation...';
+    if (activeAudio === audio) {
+      elements.audioStatus.textContent = recording.languageIndex === currentLang
+        ? 'Playing pronunciation...' : 'Playing Hindi recording for this Nepali combination...';
+    }
   } catch (error) {
     // Replaced or muted playback must not start a stale speech fallback.
     if (activeAudio !== audio) return;
