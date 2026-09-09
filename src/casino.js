@@ -1,5 +1,7 @@
 const fullTurn = Math.PI * 2;
 const svgNamespace = 'http://www.w3.org/2000/svg';
+// Keep the audio revision in sync with the checked-in recording manifest.
+const audioBaseUrl = 'https://cdn.jsdelivr.net/gh/nsdevaraj/IndianLetters@419d457f7c14afd4345815694a861a6fddfcaa0d/audio';
 const wedgeColors = ['var(--wedge-one)', 'var(--wedge-two)', 'var(--wedge-three)', 'var(--wedge-four)'];
 let currentLang = 0;
 let consonantIndex = 0;
@@ -249,7 +251,7 @@ function speak(text) {
   const voice = synthesis && synthesis.getVoices().find(candidate =>
     candidate.lang.toLowerCase().split(/[-_]/)[0] === languageCode.split('-')[0]);
   if (!voice || typeof SpeechSynthesisUtterance === 'undefined') {
-    elements.audioStatus.textContent = 'No recording is bundled for this combination, and no matching device voice is available.';
+    elements.audioStatus.textContent = 'No recording is available for this combination, and no matching device voice is available.';
     return;
   }
   const utterance = new SpeechSynthesisUtterance(text);
@@ -280,7 +282,7 @@ async function playAudio() {
     speak(text);
     return;
   }
-  const audio = new Audio(`audio/${encodeURIComponent(lang[currentLang])}/${encodeURIComponent(filename)}`);
+  const audio = new Audio(`${audioBaseUrl}/${encodeURIComponent(lang[currentLang])}/${encodeURIComponent(filename)}`);
   activeAudio = audio;
   audio.playbackRate = 0.8;
   audio.onended = () => {
