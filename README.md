@@ -1,5 +1,5 @@
 # IndianLetters
-Learning Indian Letters of 16 Languages
+Learning Indian Letters of 20 Languages
 
 ## Play and learn
 
@@ -23,11 +23,11 @@ on resize. Reduced-motion preferences skip the spinning animation. A language
 can be linked directly, for example `index.html?l=3` for Bengali or `?l=6` for
 Malayalam.
 
-Six additional languages are available: **Nepali, Burmese, Lao, Javanese,
-Amharic and Khmer**. Their stable link IDs are `10` through `15`, respectively
-(for example, `index.html?l=14` opens Amharic). Script fonts are bundled locally.
-Amharic selects precomposed syllable orders; the other additions use explicit
-vowel signs or patterns, including Burmese and Javanese spelling exceptions.
+Four additional languages are available: **Assamese, Tibetan, Marathi and
+Odia**. Their stable link IDs are `16` through `19`, respectively (for example,
+`index.html?l=18` opens Marathi). Script fonts are bundled locally. They are
+added alongside the earlier 16-language set, and Marathi reuses the matching
+Hindi audio archive for shared consonant and vowel combinations.
 
 Script-specific [Noto fonts](https://fonts.google.com/noto) are bundled locally
 in `fonts/` so letters do not depend on installed system fonts or a CDN.

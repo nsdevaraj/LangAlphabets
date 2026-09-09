@@ -3,7 +3,7 @@ const svgNamespace = 'http://www.w3.org/2000/svg';
 // Keep the audio revision in sync with the checked-in recording manifest.
 const audioBaseUrl = 'https://cdn.jsdelivr.net/gh/nsdevaraj/IndianLetters@419d457f7c14afd4345815694a861a6fddfcaa0d/audio';
 const wedgeColors = ['var(--wedge-one)', 'var(--wedge-two)', 'var(--wedge-three)', 'var(--wedge-four)'];
-const equationFallbackLanguages = new Set([9, 11, 12, 13, 14, 15]);
+const equationFallbackLanguages = new Set([9, 11, 12, 13, 14, 15, 16, 17, 18, 19]);
 let currentLang = 0;
 let consonantIndex = 0;
 let vowelIndex = 0;
@@ -301,8 +301,12 @@ async function playAudio() {
   try {
     await audio.play();
     if (activeAudio === audio) {
+      const sharedLanguageName = recording.languageIndex === currentLang ? '' : lang[recording.languageIndex];
       elements.audioStatus.textContent = recording.languageIndex === currentLang
-        ? 'Playing pronunciation...' : 'Playing Hindi recording for this Nepali combination...';
+        ? 'Playing pronunciation...'
+        : currentLang === 10
+          ? 'Playing Hindi recording for this Nepali combination...'
+          : `Playing ${sharedLanguageName} recording for this ${lang[currentLang]} combination...`;
     }
   } catch (error) {
     // Replaced or muted playback must not start a stale speech fallback.

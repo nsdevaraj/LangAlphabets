@@ -1,6 +1,7 @@
 var lang = [
   'தமிழ்', 'తెలుగు', 'ಕನ್ನಡ', 'বাংলা', 'हिंदी', 'ਗੁਰਮੁਖੀ', 'മലയാളം', 'ગુજરાતી', 'ไทย', 'සිංහල',
   'नेपाली', 'မြန်မာ', 'ລາວ', 'ꦧꦱꦗꦮ', 'አማርኛ', 'ខ្មែរ',
+  'অসমীয়া', 'བོད་ཡིག', 'मराठी', 'ଓଡ଼ିଆ',
 ];
 
 // Each row contains seven independently encoded Ethiopic syllables, not vowel marks.
@@ -33,6 +34,10 @@ var vowelLetterLangs = [
   ['◌', '◌ꦶ', '◌ꦸ', '◌ꦼ', '◌ꦺ', '◌ꦺꦴ'],
   ['አ', 'ኡ', 'ኢ', 'ኣ', 'ኤ', 'እ', 'ኦ'],
   ['◌ា', '◌ិ', '◌ី', '◌ឹ', '◌ឺ', '◌ុ', '◌ូ', '◌ួ', '◌ើ', '◌ឿ', '◌ៀ', '◌េ', '◌ែ', '◌ៃ', '◌ោ', '◌ៅ'],
+  ['অ', 'আ', 'ই', 'ঈ', 'উ', 'ঊ', 'এ', 'ঐ', 'ও', 'ঔ'],
+  ['ཨ', 'ཨི', 'ཨུ', 'ཨེ', 'ཨོ', 'ཨཾ', 'ཨྃ'],
+  ['अ', 'आ', 'इ', 'ई', 'उ', 'ऊ', 'ए', 'ऐ', 'ओ', 'औ', 'अं', 'अः'],
+  ['ଅ', 'ଆ', 'ଇ', 'ଈ', 'ଉ', 'ଊ', 'ଏ', 'ଐ', 'ଓ', 'ଔ', 'ଅଂ', 'ଅଃ'],
 ];
 
 var consonantLangs = [
@@ -52,6 +57,10 @@ var consonantLangs = [
   ['ꦲ', 'ꦤ', 'ꦕ', 'ꦫ', 'ꦏ', 'ꦢ', 'ꦠ', 'ꦱ', 'ꦮ', 'ꦭ', 'ꦥ', 'ꦝ', 'ꦗ', 'ꦪ', 'ꦚ', 'ꦩ', 'ꦒ', 'ꦧ', 'ꦛ', 'ꦔ'],
   amharicSyllables.map(row => Array.from(row)[0]),
   ['ក', 'ខ', 'គ', 'ឃ', 'ង', 'ច', 'ឆ', 'ជ', 'ឈ', 'ញ', 'ដ', 'ឋ', 'ឌ', 'ឍ', 'ណ', 'ត', 'ថ', 'ទ', 'ធ', 'ន', 'ប', 'ផ', 'ព', 'ភ', 'ម', 'យ', 'រ', 'ល', 'វ', 'ស', 'ហ', 'ឡ', 'អ'],
+  ['ক', 'খ', 'গ', 'ঘ', 'ঙ', 'চ', 'ছ', 'জ', 'ঝ', 'ঞ', 'ট', 'ঠ', 'ড', 'ঢ', 'ণ', 'ত', 'থ', 'দ', 'ধ', 'ন', 'প', 'ফ', 'ব', 'ভ', 'ম', 'য', 'ৰ', 'ল', 'ৱ', 'শ', 'ষ', 'স', 'হ'],
+  ['ཀ', 'ཁ', 'ག', 'ང', 'ཅ', 'ཆ', 'ཇ', 'ཉ', 'ཏ', 'ཐ', 'ད', 'ན', 'པ', 'ཕ', 'བ', 'མ', 'འ', 'ཡ', 'ར', 'ལ', 'ཤ', 'ས', 'ཧ', 'ཨ'],
+  ['क', 'ख', 'ग', 'घ', 'ङ', 'च', 'छ', 'ज', 'झ', 'ञ', 'ट', 'ठ', 'ड', 'ढ', 'ण', 'त', 'थ', 'द', 'ध', 'न', 'प', 'फ', 'ब', 'भ', 'म', 'य', 'र', 'ल', 'व', 'श', 'ष', 'स', 'ह'],
+  ['କ', 'ଖ', 'ଗ', 'ଘ', 'ଙ', 'ଚ', 'ଛ', 'ଜ', 'ଝ', 'ଞ', 'ଟ', 'ଠ', 'ଡ', 'ଢ', 'ଣ', 'ତ', 'ଥ', 'ଦ', 'ଧ', 'ନ', 'ପ', 'ଫ', 'ବ', 'ଭ', 'ମ', 'ଯ', 'ର', 'ଲ', 'ଳ', 'ଶ', 'ଷ', 'ସ', 'ହ'],
 ];
 
 var vowelSignLangs = [
@@ -71,9 +80,13 @@ var vowelSignLangs = [
   ['', 'ꦶ', 'ꦸ', 'ꦼ', 'ꦺ', 'ꦺꦴ'],
   ['', '', '', '', '', '', ''],
   ['ា', 'ិ', 'ី', 'ឹ', 'ឺ', 'ុ', 'ូ', 'ួ', 'ើ', 'ឿ', 'ៀ', 'េ', 'ែ', 'ៃ', 'ោ', 'ៅ'],
+  ['', 'া', 'ি', 'ী', 'ু', 'ূ', 'ে', 'ৈ', 'ো', 'ৌ'],
+  ['', 'ི', 'ུ', 'ེ', 'ོ', 'ཾ', 'ྃ'],
+  ['', 'ा', 'ि', 'ी', 'ु', 'ू', 'े', 'ै', 'ो', 'ौ', 'ं', 'ः'],
+  ['', 'ା', 'ି', 'ୀ', 'ୁ', 'ୂ', 'େ', 'ୈ', 'ୋ', 'ୌ', 'ଂ', 'ଃ'],
 ];
 
-var meyEzuthuLangs = ['்', '్', '್', '্', '्', '੍', '്', '્', '', '්', '्', '', '', '', '', ''];
+var meyEzuthuLangs = ['்', '్', '್', '্', '्', '੍', '്', '্', '', '්', '्', '', '', '', '', '', '্', '', '्', '୍'];
 
 var languageDetails = [
   {
@@ -125,6 +138,7 @@ var languageDetails = [
   },
   {
     code: 'ne-NP', font: 'Noto Sans Devanagari', script: 'Devanagari',
+    sharedAudioWith: 'hi-IN',
     note: 'Nepali: 33 core consonants plus the common conjuncts क्ष, त्र and ज्ञ. Anusvara and visarga forms are signs, not independent vowels. Matching letters use Hindi recordings when Nepali recordings are absent; pronunciation may differ.',
   },
   {
@@ -152,6 +166,23 @@ var languageDetails = [
     code: 'km-KH', font: 'Noto Sans Khmer', script: 'Khmer',
     composition: 'pattern', vowelCarrier: 'អ',
     note: 'Khmer: 33 consonants and 16 dependent-vowel patterns. Vowel sounds depend on the consonant series. Independent vowels, consonant clusters and extra vowel/coda signs are not included.',
+  },
+  {
+    code: 'as-IN', font: 'Noto Sans Bengali', script: 'Assamese',
+    note: 'Assamese: a Bengali-derived script with local letters like ৰ and ৱ. The exercise uses the familiar vowel-sign set and core consonants for simple combinations.',
+  },
+  {
+    code: 'bo-IN', font: 'Noto Sans Devanagari', script: 'Tibetan',
+    note: 'Tibetan: a compact syllabic script with core subscript-like vowels and common consonants. This lesson focuses on the basic letter-vowel combinations.',
+  },
+  {
+    code: 'mr-IN', font: 'Noto Sans Devanagari', script: 'Devanagari',
+    sharedAudioWith: 'hi-IN',
+    note: 'Marathi: 33 core Devanagari consonants with the same common vowel set. Marathi pronunciation uses the matching Hindi archive recording for the same combination.',
+  },
+  {
+    code: 'or-IN', font: 'Noto Sans Bengali', script: 'Oriya',
+    note: 'Oriya: a close cousin of Bengali with its own vowel signs and rounder forms. This exercise keeps the common core consonants and dependent vowels together.',
   },
 ];
 
@@ -220,6 +251,7 @@ function getRecordedAudioFilename(languageIndex, consonantIndex, vowelIndex, cat
   const consonant = consonantLangs[languageIndex][consonantIndex];
   const vowel = getRecordingVowel(languageIndex, vowelIndex);
   const recordings = catalog[languageIndex];
+  if (!recordings) return null;
   const exact = recordings[getRecordingKey(consonant, vowel)];
   if (exact) return exact;
   const alias = languageDetails[languageIndex].recordingVowelAliases?.[vowel];
@@ -232,18 +264,22 @@ function getRecordedAudioFilename(languageIndex, consonantIndex, vowelIndex, cat
 function getPlaybackRecording(languageIndex, consonantIndex, vowelIndex, catalog) {
   const filename = getRecordedAudioFilename(languageIndex, consonantIndex, vowelIndex, catalog);
   if (filename) return { languageIndex, filename };
-  if (languageDetails[languageIndex].code !== 'ne-NP') return null;
 
-  const hindiIndex = languageDetails.findIndex(details => details.code === 'hi-IN');
+  const sharedCode = languageDetails[languageIndex].sharedAudioWith;
+  if (!sharedCode) return null;
+
+  const sharedIndex = languageDetails.findIndex(details => details.code === sharedCode);
+  if (sharedIndex < 0) return null;
+
   const consonant = consonantLangs[languageIndex][consonantIndex].normalize('NFC');
   const vowel = getRecordingVowel(languageIndex, vowelIndex).normalize('NFC');
-  // Match identities, not positions: Nepali conjuncts occupy Hindi nukta-letter slots.
-  const hindiConsonant = consonantLangs[hindiIndex].findIndex(letter => letter.normalize('NFC') === consonant);
-  const hindiVowel = vowelLetterLangs[hindiIndex].findIndex(letter => letter.normalize('NFC') === vowel);
-  if (hindiConsonant < 0 || hindiVowel < 0) return null;
+  // Match identities, not positions: shared-script pairs can reuse a matching source-letter inventory.
+  const sharedConsonant = consonantLangs[sharedIndex].findIndex(letter => letter.normalize('NFC') === consonant);
+  const sharedVowel = vowelLetterLangs[sharedIndex].findIndex(letter => letter.normalize('NFC') === vowel);
+  if (sharedConsonant < 0 || sharedVowel < 0) return null;
 
-  const hindiFilename = getRecordedAudioFilename(hindiIndex, hindiConsonant, hindiVowel, catalog);
-  return hindiFilename ? { languageIndex: hindiIndex, filename: hindiFilename } : null;
+  const sharedFilename = getRecordedAudioFilename(sharedIndex, sharedConsonant, sharedVowel, catalog);
+  return sharedFilename ? { languageIndex: sharedIndex, filename: sharedFilename } : null;
 }
 
 function getPronunciationText(languageIndex, consonantIndex, vowelIndex) {
