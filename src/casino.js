@@ -3,6 +3,7 @@ const svgNamespace = 'http://www.w3.org/2000/svg';
 // Keep the audio revision in sync with the checked-in recording manifest.
 const audioBaseUrl = 'https://cdn.jsdelivr.net/gh/nsdevaraj/IndianLetters@419d457f7c14afd4345815694a861a6fddfcaa0d/audio';
 const wedgeColors = ['var(--wedge-one)', 'var(--wedge-two)', 'var(--wedge-three)', 'var(--wedge-four)'];
+const equationFallbackLanguages = new Set([9, 11, 12, 13, 14, 15]);
 let currentLang = 0;
 let consonantIndex = 0;
 let vowelIndex = 0;
@@ -251,7 +252,9 @@ function speak(text) {
   const voice = synthesis && synthesis.getVoices().find(candidate =>
     candidate.lang.toLowerCase().split(/[-_]/)[0] === languageCode.split('-')[0]);
   if (!voice || typeof SpeechSynthesisUtterance === 'undefined') {
-    elements.audioStatus.textContent = 'No recording is available for this combination, and no matching device voice is available.';
+    elements.audioStatus.textContent = equationFallbackLanguages.has(currentLang)
+      ? `${getConsonantForm(currentLang, consonantIndex)} + ${getSpokenVowel(currentLang, vowelIndex)} = ${combineLetters(currentLang, consonantIndex, vowelIndex)}`
+      : 'No recording is available for this combination, and no matching device voice is available.';
     return;
   }
   const utterance = new SpeechSynthesisUtterance(text);

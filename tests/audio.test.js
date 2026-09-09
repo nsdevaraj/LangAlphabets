@@ -167,16 +167,25 @@ test('absent recordings use only matching-language voices without requesting the
   assert.equal(player.utterances[0].text, letters.getPronunciationText(4, 33, 0));
 });
 
-test('languages without recordings or matching voices report unavailable audio', async () => {
+test('languages without recordings or matching voices show their written equation', async () => {
   const player = createPlayer({ voices: [{ lang: 'en-US' }] });
-  for (let language = 9; language < letters.lang.length; language++) {
-    if (language === 10) continue;
+  for (const language of [9, 11, 12, 13, 14, 15]) {
     player.select(language);
     await player.context.playAudio();
-    assert.match(player.audioStatus.textContent, /No recording is available.*no matching device voice/);
+    assert.equal(
+      player.audioStatus.textContent,
+      `${letters.getConsonantForm(language, 0)} + ${letters.getSpokenVowel(language, 0)} = ${letters.combineLetters(language, 0, 0)}`,
+    );
   }
   assert.equal(player.audios.length, 0);
   assert.equal(player.utterances.length, 0);
+});
+
+test('Nepali still reports unavailable audio without a matching device voice', async () => {
+  const player = createPlayer({ voices: [{ lang: 'en-US' }] });
+  player.select(10, 33);
+  await player.context.playAudio();
+  assert.match(player.audioStatus.textContent, /No recording is available.*no matching device voice/);
 });
 
 for (const [name, message] of [
