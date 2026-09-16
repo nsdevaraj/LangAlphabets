@@ -44,6 +44,12 @@
             <option value="19" lang="or">ଓଡ଼ିଆ - Odia</option>
           </select>
         </div>
+        <button id="autoPlayButton" class="quiet-button theme-toggle" type="button" aria-pressed="false">
+          <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M8 5.5v13l11-6.5-11-6.5Z" fill="currentColor" />
+          </svg>
+          <span id="autoPlayLabel">Auto play all</span>
+        </button>
         <button id="themeButton" class="quiet-button theme-toggle" type="button" aria-pressed="false" disabled>
           <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
             <path d="M20.5 14A8.5 8.5 0 0 1 10 3.5 8.5 8.5 0 1 0 20.5 14Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" />
@@ -60,6 +66,7 @@
         <p>Pick a consonant, then spin the wheel or choose a sound below to explore a combination.</p>
       </div>
       <p id="languageNote" class="language-note"></p>
+      <p id="autoPlayStatus" class="language-note" role="status" aria-live="polite"></p>
 
       <div class="learning-layout">
         <section class="panel consonant-panel" aria-labelledby="consonantHeading">

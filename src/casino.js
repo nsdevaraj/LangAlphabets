@@ -16,6 +16,10 @@ let activeUtterance = null;
 let initialized = false;
 let elements;
 let segments = [];
+const autoPlayGapMs = 2000;
+let autoPlayQueue = null;
+let autoPlayIndex = 0;
+let autoPlayTimer = null;
 
 function getLanguageIndex(href) {
   const value = new URL(href).searchParams.get('l');
@@ -140,12 +144,14 @@ function showResult(announce = false) {
 }
 
 function selectConsonant(index) {
+  stopAutoPlay();
   consonantIndex = index;
   stopAudio();
   showResult(animationId === null && drag === null);
 }
 
 function selectVowel(index, announce = true) {
+  stopAutoPlay();
   stopSpin();
   stopAudio();
   vowelIndex = index;
@@ -183,6 +189,7 @@ function animateToVowel(index, turns = 3, direction = 1) {
 }
 
 function spinWheel() {
+  stopAutoPlay();
   animateToVowel(Math.floor(Math.random() * segments.length));
 }
 
@@ -195,6 +202,7 @@ function startDrag(event) {
   if (event.button !== 0 || drag) return;
   const segment = event.target.closest('[data-index]');
   if (!segment) return;
+  stopAutoPlay();
   stopSpin();
   stopAudio();
   drag = {
@@ -359,11 +367,89 @@ function setCurrentLang(dropdown) {
     elements.audioStatus.textContent = 'Please choose a language from the list.';
     return;
   }
+  stopAutoPlay();
   currentLang = value;
   assignLanguage();
   const url = new URL(location.href);
   url.searchParams.set('l', String(currentLang));
   window.history.replaceState(null, '', url);
+}
+
+function buildAutoPlayQueue() {
+  const queue = [];
+  for (let language = 0; language < languageDetails.length; language++) {
+    const consonants = consonantLangs[language];
+    const vowels = vowelLetterLangs[language];
+    for (let consonant = 0; consonant < consonants.length; consonant++) {
+      for (let vowel = 0; vowel < vowels.length; vowel++) {
+        queue.push({ language, consonant, vowel });
+      }
+    }
+  }
+  return queue;
+}
+
+function setAutoPlayControlsDisabled(disabled) {
+  elements.selectLanguage.disabled = disabled;
+  elements.spinButton.disabled = disabled;
+  elements.listenButton.disabled = disabled || !soundEnabled;
+}
+
+function stopAutoPlay() {
+  if (!autoPlayQueue) return;
+  if (autoPlayTimer !== null) {
+    clearTimeout(autoPlayTimer);
+    autoPlayTimer = null;
+  }
+  autoPlayQueue = null;
+  autoPlayIndex = 0;
+  elements.autoPlayButton.setAttribute('aria-pressed', 'false');
+  elements.autoPlayLabel.textContent = 'Auto play all';
+  elements.autoPlayStatus.textContent = '';
+  setAutoPlayControlsDisabled(false);
+}
+
+function stepAutoPlay() {
+  if (!autoPlayQueue || autoPlayIndex >= autoPlayQueue.length) {
+    stopAutoPlay();
+    return;
+  }
+  const { language, consonant, vowel } = autoPlayQueue[autoPlayIndex];
+  autoPlayIndex += 1;
+  if (language !== currentLang) {
+    currentLang = language;
+    assignLanguage();
+    const url = new URL(location.href);
+    url.searchParams.set('l', String(currentLang));
+    window.history.replaceState(null, '', url);
+  }
+  consonantIndex = consonant;
+  vowelIndex = vowel;
+  rotation = -vowel * fullTurn / vowelLetterLangs[currentLang].length;
+  updateWheel();
+  showResult(true);
+  elements.autoPlayStatus.textContent =
+    `Auto playing ${lang[currentLang]}: combination ${autoPlayIndex} of ${autoPlayQueue.length}`;
+  autoPlayTimer = setTimeout(stepAutoPlay, autoPlayGapMs);
+}
+
+function startAutoPlay() {
+  stopSpin();
+  stopAudio();
+  autoPlayQueue = buildAutoPlayQueue();
+  autoPlayIndex = 0;
+  elements.autoPlayButton.setAttribute('aria-pressed', 'true');
+  elements.autoPlayLabel.textContent = 'Stop auto play';
+  setAutoPlayControlsDisabled(true);
+  stepAutoPlay();
+}
+
+function toggleAutoPlay() {
+  if (autoPlayQueue) {
+    stopAutoPlay();
+  } else {
+    startAutoPlay();
+  }
 }
 
 function init() {
@@ -373,6 +459,7 @@ function init() {
     'centerText', 'result', 'resultConsonant', 'resultVowel', 'resultLetter',
     'consonantCount', 'vowelCount', 'spinButton', 'spinLabel', 'listenButton',
     'soundButton', 'audioStatus', 'vowelHeading', 'languageNote', 'consonantHeading',
+    'autoPlayButton', 'autoPlayLabel', 'autoPlayStatus',
   ].map(id => [id, document.getElementById(id)]));
   currentLang = getLanguageIndex(location.href);
   assignLanguage();
@@ -384,13 +471,14 @@ function init() {
     stopAudio();
     elements.soundButton.setAttribute('aria-pressed', String(soundEnabled));
     elements.soundButton.textContent = soundEnabled ? 'Sound on' : 'Sound off';
-    elements.listenButton.disabled = !soundEnabled || animationId !== null || drag !== null;
+    elements.listenButton.disabled = !soundEnabled || animationId !== null || drag !== null || autoPlayQueue !== null;
   });
   elements.letterWheel.addEventListener('pointerdown', startDrag);
   elements.letterWheel.addEventListener('pointermove', moveDrag);
   elements.letterWheel.addEventListener('pointerup', endDrag);
   elements.letterWheel.addEventListener('pointercancel', cancelDrag);
   elements.letterWheel.addEventListener('lostpointercapture', cancelDrag);
+  elements.autoPlayButton.addEventListener('click', toggleAutoPlay);
   window.addEventListener('pagehide', () => selectVowel(vowelIndex, false));
   if (window.speechSynthesis) window.speechSynthesis.getVoices();
   initialized = true;
