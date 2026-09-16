@@ -128,7 +128,7 @@ function stopAudio() {
   elements.audioStatus.textContent = '';
 }
 
-function showResult(announce = false) {
+function showResult(announce = false, onDone) {
   const combination = combineLetters(currentLang, consonantIndex, vowelIndex);
   elements.centerText.textContent = combination;
   elements.resultConsonant.textContent = getConsonantForm(currentLang, consonantIndex);
@@ -140,7 +140,11 @@ function showResult(announce = false) {
   [...elements.vowelDiv.children].forEach((button, index) => {
     button.setAttribute('aria-pressed', String(index === vowelIndex));
   });
-  if (announce && soundEnabled) playAudio();
+  if (announce && soundEnabled) {
+    playAudio(onDone);
+  } else if (onDone) {
+    onDone();
+  }
 }
 
 function selectConsonant(index) {
@@ -254,7 +258,7 @@ function cancelDrag(event) {
   if (drag && drag.pointerId === event.pointerId) selectVowel(vowelIndex, false);
 }
 
-function speak(text) {
+function speak(text, onDone) {
   const synthesis = window.speechSynthesis;
   const languageCode = languageDetails[currentLang].code;
   const voice = synthesis && synthesis.getVoices().find(candidate =>
@@ -263,6 +267,7 @@ function speak(text) {
     elements.audioStatus.textContent = equationFallbackLanguages.has(currentLang)
       ? `${getConsonantForm(currentLang, consonantIndex)} + ${getSpokenVowel(currentLang, vowelIndex)} = ${combineLetters(currentLang, consonantIndex, vowelIndex)}`
       : 'No recording is available for this combination, and no matching device voice is available.';
+    if (onDone) onDone();
     return;
   }
   const utterance = new SpeechSynthesisUtterance(text);
@@ -275,22 +280,24 @@ function speak(text) {
     if (activeUtterance !== utterance) return;
     activeUtterance = null;
     elements.audioStatus.textContent = '';
+    if (onDone) onDone();
   };
   utterance.onerror = () => {
     if (activeUtterance !== utterance) return;
     activeUtterance = null;
     elements.audioStatus.textContent = 'Your device could not play this pronunciation. Try Listen again.';
+    if (onDone) onDone();
   };
   synthesis.speak(utterance);
 }
 
-async function playAudio() {
+async function playAudio(onDone) {
   stopAudio();
   if (!soundEnabled) return;
   const text = getPronunciationText(currentLang, consonantIndex, vowelIndex);
   const recording = getPlaybackRecording(currentLang, consonantIndex, vowelIndex);
   if (!recording) {
-    speak(text);
+    speak(text, onDone);
     return;
   }
   const audio = new Audio(`${audioBaseUrl}/${encodeURIComponent(lang[recording.languageIndex])}/${encodeURIComponent(recording.filename)}`);
@@ -300,11 +307,13 @@ async function playAudio() {
     if (activeAudio !== audio) return;
     activeAudio = null;
     elements.audioStatus.textContent = '';
+    if (onDone) onDone();
   };
   audio.onerror = () => {
     if (activeAudio !== audio) return;
     stopAudio();
     elements.audioStatus.textContent = 'The recording could not be loaded or played. Try Listen again.';
+    if (onDone) onDone();
   };
   try {
     await audio.play();
@@ -325,6 +334,7 @@ async function playAudio() {
     } else {
       elements.audioStatus.textContent = 'The recording could not be loaded or played. Try Listen again.';
     }
+    if (onDone) onDone();
   }
 }
 
@@ -386,7 +396,10 @@ function buildAutoPlayQueue() {
       }
     }
   }
-  return queue;
+  // Start from the currently selected combination, wrapping around to cover everything else.
+  const startIndex = queue.findIndex(item =>
+    item.language === currentLang && item.consonant === consonantIndex && item.vowel === vowelIndex);
+  return startIndex > 0 ? [...queue.slice(startIndex), ...queue.slice(0, startIndex)] : queue;
 }
 
 function setAutoPlayControlsDisabled(disabled) {
@@ -414,6 +427,7 @@ function stepAutoPlay() {
     stopAutoPlay();
     return;
   }
+  const queueRef = autoPlayQueue;
   const { language, consonant, vowel } = autoPlayQueue[autoPlayIndex];
   autoPlayIndex += 1;
   if (language !== currentLang) {
@@ -427,10 +441,14 @@ function stepAutoPlay() {
   vowelIndex = vowel;
   rotation = -vowel * fullTurn / vowelLetterLangs[currentLang].length;
   updateWheel();
-  showResult(true);
   elements.autoPlayStatus.textContent =
     `Auto playing ${lang[currentLang]}: combination ${autoPlayIndex} of ${autoPlayQueue.length}`;
-  autoPlayTimer = setTimeout(stepAutoPlay, autoPlayGapMs);
+  // Wait for the recording (or speech fallback) to finish before starting the gap timer,
+  // so combinations don't overlap when sound is on.
+  showResult(true, () => {
+    if (autoPlayQueue !== queueRef) return;
+    autoPlayTimer = setTimeout(stepAutoPlay, autoPlayGapMs);
+  });
 }
 
 function startAutoPlay() {
