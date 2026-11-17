@@ -152,7 +152,8 @@ select {
     'Noto Sans Kannada', 'Noto Sans Bengali', 'Noto Sans Devanagari',
     'Noto Sans Gurmukhi', 'Noto Sans Malayalam', 'Noto Sans Gujarati',
     'Noto Sans Thai', 'Noto Sans Sinhala', 'Noto Sans Myanmar', 'Noto Sans Lao',
-    'Noto Sans Javanese', 'Noto Sans Ethiopic', 'Noto Sans Khmer', sans-serif;
+    'Noto Sans Javanese', 'Noto Sans Ethiopic', 'Noto Sans Khmer',
+    'Noto Serif Tibetan', 'Noto Sans Oriya', sans-serif;
   font-size: 15px;
   cursor: pointer;
 }

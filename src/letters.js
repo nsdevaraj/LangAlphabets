@@ -34,10 +34,10 @@ var vowelLetterLangs = [
   ['◌', '◌ꦶ', '◌ꦸ', '◌ꦼ', '◌ꦺ', '◌ꦺꦴ'],
   ['አ', 'ኡ', 'ኢ', 'ኣ', 'ኤ', 'እ', 'ኦ'],
   ['◌ា', '◌ិ', '◌ី', '◌ឹ', '◌ឺ', '◌ុ', '◌ូ', '◌ួ', '◌ើ', '◌ឿ', '◌ៀ', '◌េ', '◌ែ', '◌ៃ', '◌ោ', '◌ៅ'],
-  ['অ', 'আ', 'ই', 'ঈ', 'উ', 'ঊ', 'এ', 'ঐ', 'ও', 'ঔ'],
+  ['অ', 'আ', 'ই', 'ঈ', 'উ', 'ঊ', 'ঋ', 'এ', 'ঐ', 'ও', 'ঔ'],
   ['ཨ', 'ཨི', 'ཨུ', 'ཨེ', 'ཨོ', 'ཨཾ', 'ཨྃ'],
-  ['अ', 'आ', 'इ', 'ई', 'उ', 'ऊ', 'ए', 'ऐ', 'ओ', 'औ', 'अं', 'अः', 'ॲ', 'ऑ'],
-  ['ଅ', 'ଆ', 'ଇ', 'ଈ', 'ଉ', 'ଊ', 'ଏ', 'ଐ', 'ଓ', 'ଔ', 'ଅଂ', 'ଅଃ'],
+  ['अ', 'आ', 'इ', 'ई', 'उ', 'ऊ', 'ऋ', 'ए', 'ऐ', 'ओ', 'औ', 'अं', 'अः', 'ॲ', 'ऑ'],
+  ['ଅ', 'ଆ', 'ଇ', 'ଈ', 'ଉ', 'ଊ', 'ଋ', 'ଏ', 'ଐ', 'ଓ', 'ଔ', 'ଅଂ', 'ଅଃ'],
 ];
 
 var consonantLangs = [
@@ -57,10 +57,10 @@ var consonantLangs = [
   ['ꦲ', 'ꦤ', 'ꦕ', 'ꦫ', 'ꦏ', 'ꦢ', 'ꦠ', 'ꦱ', 'ꦮ', 'ꦭ', 'ꦥ', 'ꦝ', 'ꦗ', 'ꦪ', 'ꦚ', 'ꦩ', 'ꦒ', 'ꦧ', 'ꦛ', 'ꦔ'],
   amharicSyllables.map(row => Array.from(row)[0]),
   ['ក', 'ខ', 'គ', 'ឃ', 'ង', 'ច', 'ឆ', 'ជ', 'ឈ', 'ញ', 'ដ', 'ឋ', 'ឌ', 'ឍ', 'ណ', 'ត', 'ថ', 'ទ', 'ធ', 'ន', 'ប', 'ផ', 'ព', 'ភ', 'ម', 'យ', 'រ', 'ល', 'វ', 'ស', 'ហ', 'ឡ', 'អ'],
-  ['ক', 'খ', 'গ', 'ঘ', 'ঙ', 'চ', 'ছ', 'জ', 'ঝ', 'ঞ', 'ট', 'ঠ', 'ড', 'ঢ', 'ণ', 'ত', 'থ', 'দ', 'ধ', 'ন', 'প', 'ফ', 'ব', 'ভ', 'ম', 'য', 'ৰ', 'ল', 'ৱ', 'শ', 'ষ', 'স', 'হ'],
-  ['ཀ', 'ཁ', 'ག', 'ང', 'ཅ', 'ཆ', 'ཇ', 'ཉ', 'ཏ', 'ཐ', 'ད', 'ན', 'པ', 'ཕ', 'བ', 'མ', 'འ', 'ཡ', 'ར', 'ལ', 'ཤ', 'ས', 'ཧ', 'ཨ'],
+  ['ক', 'খ', 'গ', 'ঘ', 'ঙ', 'চ', 'ছ', 'জ', 'ঝ', 'ঞ', 'ট', 'ঠ', 'ড', 'ড়', 'ঢ', 'ঢ়', 'ণ', 'ত', 'থ', 'দ', 'ধ', 'ন', 'প', 'ফ', 'ব', 'ভ', 'ম', 'য', 'য়', 'ৰ', 'ল', 'ৱ', 'শ', 'ষ', 'স', 'হ', 'ক্ষ'],
+  ['ཀ', 'ཁ', 'ག', 'ང', 'ཅ', 'ཆ', 'ཇ', 'ཉ', 'ཏ', 'ཐ', 'ད', 'ན', 'པ', 'ཕ', 'བ', 'མ', 'ཙ', 'ཚ', 'ཛ', 'ཝ', 'ཞ', 'ཟ', 'འ', 'ཡ', 'ར', 'ལ', 'ཤ', 'ས', 'ཧ', 'ཨ'],
   ['क', 'ख', 'ग', 'घ', 'ङ', 'च', 'छ', 'ज', 'झ', 'ञ', 'ट', 'ठ', 'ड', 'ढ', 'ण', 'त', 'थ', 'द', 'ध', 'न', 'प', 'फ', 'ब', 'भ', 'म', 'य', 'र', 'ल', 'व', 'श', 'ष', 'स', 'ह', 'ळ', 'क्ष', 'ज्ञ'],
-  ['କ', 'ଖ', 'ଗ', 'ଘ', 'ଙ', 'ଚ', 'ଛ', 'ଜ', 'ଝ', 'ଞ', 'ଟ', 'ଠ', 'ଡ', 'ଢ', 'ଣ', 'ତ', 'ଥ', 'ଦ', 'ଧ', 'ନ', 'ପ', 'ଫ', 'ବ', 'ଭ', 'ମ', 'ଯ', 'ର', 'ଲ', 'ଳ', 'ଶ', 'ଷ', 'ସ', 'ହ'],
+  ['କ', 'ଖ', 'ଗ', 'ଘ', 'ଙ', 'ଚ', 'ଛ', 'ଜ', 'ଝ', 'ଞ', 'ଟ', 'ଠ', 'ଡ', 'ଡ଼', 'ଢ', 'ଢ଼', 'ଣ', 'ତ', 'ଥ', 'ଦ', 'ଧ', 'ନ', 'ପ', 'ଫ', 'ବ', 'ଭ', 'ମ', 'ଯ', 'ୟ', 'ର', 'ଲ', 'ଳ', 'ଵ', 'ୱ', 'ଶ', 'ଷ', 'ସ', 'ହ', 'କ୍ଷ'],
 ];
 
 var vowelSignLangs = [
@@ -80,10 +80,10 @@ var vowelSignLangs = [
   ['', 'ꦶ', 'ꦸ', 'ꦼ', 'ꦺ', 'ꦺꦴ'],
   ['', '', '', '', '', '', ''],
   ['ា', 'ិ', 'ី', 'ឹ', 'ឺ', 'ុ', 'ូ', 'ួ', 'ើ', 'ឿ', 'ៀ', 'េ', 'ែ', 'ៃ', 'ោ', 'ៅ'],
-  ['', 'া', 'ি', 'ী', 'ু', 'ূ', 'ে', 'ৈ', 'ো', 'ৌ'],
+  ['', 'া', 'ি', 'ী', 'ু', 'ূ', 'ৃ', 'ে', 'ৈ', 'ো', 'ৌ'],
   ['', 'ི', 'ུ', 'ེ', 'ོ', 'ཾ', 'ྃ'],
-  ['', 'ा', 'ि', 'ी', 'ु', 'ू', 'े', 'ै', 'ो', 'ौ', 'ं', 'ः', 'ॅ', 'ॉ'],
-  ['', 'ା', 'ି', 'ୀ', 'ୁ', 'ୂ', 'େ', 'ୈ', 'ୋ', 'ୌ', 'ଂ', 'ଃ'],
+  ['', 'ा', 'ि', 'ी', 'ु', 'ू', 'ृ', 'े', 'ै', 'ो', 'ौ', 'ं', 'ः', 'ॅ', 'ॉ'],
+  ['', 'ା', 'ି', 'ୀ', 'ୁ', 'ୂ', 'ୃ', 'େ', 'ୈ', 'ୋ', 'ୌ', 'ଂ', 'ଃ'],
 ];
 
 var meyEzuthuLangs = ['்', '', '', '', '', '', '്', '', '', '්', '', '', '', '', '', '', '', '', '', ''];
@@ -96,11 +96,11 @@ var languageDetails = [
   {
     code: 'te-IN', font: 'Noto Sans Telugu', script: 'Telugu',
     extendedVowels: ['ౠ'],
-    note: 'Includes the conjunct క్ష, traditional ఱ and Sanskrit vowel ౠ. Anusvara and visarga forms are signs, not independent vowels.',
+    note: 'Includes the conjunct క్ష, traditional ఱ and Sanskrit vowel ౠ; rare ఌ and ౡ are outside this exercise. Anusvara and visarga forms are signs, not independent vowels.',
   },
   {
     code: 'kn-IN', font: 'Noto Sans Kannada', script: 'Kannada',
-    note: 'Core Kannada consonants and vowels. Anusvara and visarga forms are shown separately as signs.',
+    note: 'Core Kannada: 34 consonants and 13 vowels. Rare Sanskrit vowels ೠ, ಌ and ೡ and historical consonants are outside this exercise. Anusvara and visarga forms are signs.',
   },
   {
     code: 'bn-IN', font: 'Noto Sans Bengali', script: 'Bengali',
@@ -109,7 +109,7 @@ var languageDetails = [
   },
   {
     code: 'hi-IN', font: 'Noto Sans Devanagari', script: 'Devanagari',
-    note: 'Includes 33 core consonants and seven common nukta letters. Anusvara and visarga forms are signs, not independent vowels.',
+    note: 'Includes 33 core consonants, seven common nukta letters and 11 traditional vowels. Borrowed-vowel letters, rare Sanskrit vowels and candrabindu are outside this exercise. Anusvara and visarga forms are signs, not independent vowels.',
   },
   {
     code: 'pa-IN', font: 'Noto Sans Gurmukhi', script: 'Gurmukhi',
@@ -169,20 +169,20 @@ var languageDetails = [
   },
   {
     code: 'as-IN', font: 'Noto Sans Bengali', script: 'Assamese',
-    note: 'Assamese: a Bengali-derived script with local letters like ৰ and ৱ. The exercise uses the familiar vowel-sign set and core consonants for simple combinations.',
+    note: 'Assamese: 11 vowels and 36 consonants, including ড়, ঢ়, য়, ৰ and ৱ, plus the traditional conjunct ক্ষ. Nasal/visarga signs, vowel-less ৎ and rare Sanskrit vowels are outside this exercise.',
   },
   {
-    code: 'bo-IN', font: 'Noto Sans Devanagari', script: 'Tibetan',
-    note: 'Tibetan: a compact syllabic script with core subscript-like vowels and common consonants. This lesson focuses on the basic letter-vowel combinations.',
+    code: 'bo-IN', font: 'Noto Serif Tibetan', script: 'Tibetan',
+    note: 'Tibetan: all 30 basic letters with the inherent a and four vowel signs. Two Sanskrit nasal signs are shown separately, not as vowels. Stacks, suffix spelling rules and extended Sanskrit letters are outside this exercise.',
   },
   {
     code: 'mr-IN', font: 'Noto Sans Devanagari', script: 'Devanagari',
     sharedAudioWith: 'hi-IN',
-    note: 'Marathi: 36 consonants, including ळ, क्ष and ज्ञ, plus the Marathi vowels ॲ and ऑ. Shared letters use matching Hindi archive recordings.',
+    note: 'Marathi: 34 consonants plus the conjuncts क्ष and ज्ञ, and 13 vowels including ऋ, ॲ and ऑ. Rare Sanskrit vocalic vowels are outside this exercise. Anusvara and visarga forms are signs. Shared letters use matching Hindi archive recordings; pronunciation may differ.',
   },
   {
-    code: 'or-IN', font: 'Noto Sans Bengali', script: 'Oriya',
-    note: 'Oriya: a close cousin of Bengali with its own vowel signs and rounder forms. This exercise keeps the common core consonants and dependent vowels together.',
+    code: 'or-IN', font: 'Noto Sans Oriya', script: 'Odia',
+    note: 'Odia: 36 basic consonants, including ଡ଼, ଢ଼ and ୟ, plus the letters ଵ and ୱ and the conjunct କ୍ଷ. Includes 11 vowels with ଋ; rare Sanskrit vocalics and candrabindu are outside this exercise. Anusvara and visarga forms are signs.',
   },
 ];
 
@@ -190,6 +190,7 @@ var vowelMarkNames = {
   'ం': 'anusvara', 'ః': 'visarga', 'ಂ': 'anusvara', 'ಃ': 'visarga',
   'ं': 'anusvara', 'ः': 'visarga', 'ം': 'anusvara', 'ഃ': 'visarga',
   'ઁ': 'candrabindu', 'ં': 'anusvara', 'ઃ': 'visarga', 'ං': 'anusvara', 'ඃ': 'visarga',
+  'ཾ': 'anusvara', 'ྃ': 'candrabindu', 'ଂ': 'anusvara', 'ଃ': 'visarga',
 };
 
 function getVowelKind(languageIndex, vowelIndex) {

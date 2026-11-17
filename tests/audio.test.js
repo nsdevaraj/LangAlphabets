@@ -10,6 +10,18 @@ const source = ['letters.js', 'audio-manifest.js', 'casino.js']
   .join('\n');
 const expectedBase = 'https://cdn.jsdelivr.net/gh/nsdevaraj/IndianLetters@419d457f7c14afd4345815694a861a6fddfcaa0d/audio/';
 
+test('Marathi uses its own consonants and vowels, not the Hindi inventory', () => {
+  const marathi = 18;
+  assert.deepEqual(letters.consonantLangs[marathi].slice(-3), ['ळ', 'क्ष', 'ज्ञ']);
+  assert.deepEqual(letters.vowelLetterLangs[marathi].slice(-2), ['ॲ', 'ऑ']);
+  assert.equal(letters.consonantLangs[marathi].includes('ड़'), false);
+  for (const [vowel, combination] of [['ऋ', 'कृ'], ['ॲ', 'कॅ'], ['ऑ', 'कॉ']]) {
+    const index = letters.vowelLetterLangs[marathi].indexOf(vowel);
+    assert.equal(letters.getVowelKind(marathi, index), 'vowel');
+    assert.equal(letters.combineLetters(marathi, 0, index), combination);
+  }
+});
+
 function createPlayer(options = {}) {
   const audios = [];
   const utterances = [];
@@ -97,6 +109,21 @@ test('all 429 shared Nepali combinations play the matching Hindi CDN recording',
   }
   assert.equal(count, 429);
   assert.equal(player.audios.length, count);
+  assert.equal(player.utterances.length, 0);
+});
+
+test('restored Marathi vocalic R uses matching Hindi recordings, not shifted vowel positions', async () => {
+  const player = createPlayer();
+  const vowel = letters.vowelLetterLangs[18].indexOf('ऋ');
+  for (let consonant = 0; consonant < 33; consonant++) {
+    const recording = letters.getPlaybackRecording(18, consonant, vowel);
+    const filename = letters.getRecordedAudioFilename(4, consonant, letters.vowelLetterLangs[4].indexOf('ऋ'));
+    assert.deepEqual(recording, { languageIndex: 4, filename });
+    player.select(18, consonant, vowel);
+    await player.context.playAudio();
+    assert.equal(player.audios.at(-1).url, `${expectedBase}${encodeURIComponent(letters.lang[4])}/${encodeURIComponent(filename)}`);
+  }
+  assert.equal(player.audios.length, 33);
   assert.equal(player.utterances.length, 0);
 });
 

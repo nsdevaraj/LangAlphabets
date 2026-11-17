@@ -13,3 +13,5 @@
 @font-face { font-family: 'Noto Sans Javanese'; src: url('../fonts/NotoSansJavanese.ttf') format('truetype'); font-weight: 400; font-display: swap; }
 @font-face { font-family: 'Noto Sans Ethiopic'; src: url('../fonts/NotoSansEthiopic.ttf') format('truetype'); font-weight: 400; font-display: swap; }
 @font-face { font-family: 'Noto Sans Khmer'; src: url('../fonts/NotoSansKhmer.ttf') format('truetype'); font-weight: 400; font-display: swap; }
+@font-face { font-family: 'Noto Serif Tibetan'; src: url('../fonts/NotoSerifTibetan.ttf') format('truetype'); font-weight: 400; font-display: swap; }
+@font-face { font-family: 'Noto Sans Oriya'; src: url('../fonts/NotoSansOriya.ttf') format('truetype'); font-weight: 400; font-display: swap; }
